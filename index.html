@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mi sitio web</title>
+</head>
+<body>
+    <h1>Enlace al mas grande</h1>
+    <p>Enlace al mas grande</p>
+    <a href="https://www.cariverplate.com.ar/">Ir al mas grande </a>
+    <div id="counter"></div>
+
+    <div id="clock"></div>
+
+    <script>
+        // Obtener el contador actual desde el almacenamiento local
+        var count = localStorage.getItem('clickCount') || 0;
+
+        // Incrementar el contador cada vez que se hace clic en el enlace
+        var link = document.querySelector('a');
+        link.addEventListener('click', function(event) {
+            count++;
+            localStorage.setItem('clickCount', count);
+            updateCounter();
+        });
+
+        // Actualizar el valor del contador en la página
+        function updateCounter() {
+            var counter = document.getElementById('counter');
+            counter.innerHTML = "Contador: " + count;
+        }
+        updateCounter();
+
+        // Actualizar el reloj cada segundo
+        function updateClock() {
+            var now = new Date();
+            var clock = document.getElementById('clock');
+            clock.innerHTML = now.toLocaleTimeString();
+            setTimeout(updateClock, 1000);
+        }
+        updateClock();
+    </script>
+</body>
+</html>
