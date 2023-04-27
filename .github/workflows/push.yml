@@ -1,4 +1,4 @@
-kkname: Docker Build and Run
+name: Docker Build and Run
 
 on: [push]
 
