@@ -1,24 +1,25 @@
-name: Build and Deploy
+name: Deploy to Docker
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Build Docker image
+    - name: Build and push Docker image
       uses: docker/build-push-action@v3
       with:
-        context: .
-        push: false
+        push: true
         tags: maurisola/webpage-test:latest
-
+        build_args: |
+          HTML_FILE=index.html
+        context: .
+      
     - name: Run Docker container
-      run: docker run -d -p 80:80 maurisola/webpage-test:latest
-
+      run: docker run -d -p 8080:80 maurisola/webpage-test:latest
