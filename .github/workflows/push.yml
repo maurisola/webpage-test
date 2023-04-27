@@ -18,7 +18,7 @@ jobs:
 
     - name: Run Docker container
       run: |
-        docker run -d -p 8080:80 --name river-website webpage-test:latest
+        docker run -d -p 8080:80 --name my-container webpage-test:latest
 
     - name: Wait for container to start
       run: |
