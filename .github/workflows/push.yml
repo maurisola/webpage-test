@@ -1,25 +1,35 @@
-name: Deploy to Docker
+kkname: Docker Build and Run
 
-on:
-  push:
-    branches: [master]
+on: [push]
 
 jobs:
-  deploy:
+  build-and-run:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Build and push Docker image
-      uses: mr-smithers-excellent/docker-build-push@v6
+    - name: Build Docker image
+      uses: docker/build-push-action@v3
       with:
-        push: true
-        tags: maurisola/webpage-test:latest
-        build_args: |
-          HTML_FILE=index.html
         context: .
-      
+        push: false
+        tags: webpage-test:latest
+
     - name: Run Docker container
-      run: docker run -d -p 8080:80 maurisola/webpage-test:latest
+      run: |
+        docker run -d -p 8080:80 --name river-website webpage-test:latest
+
+    - name: Wait for container to start
+      run: |
+        until docker container logs my-container | grep 'nginx entered RUNNING state'; do sleep 1; done
+
+    - name: Check container IP address
+      id: get_container_ip
+      run: |
+        echo "::set-output name=ip::$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' my-container)"
+
+    - name: View webpage in browser
+      run: |
+        echo "Webpage can be viewed at http://${{ steps.get_container_ip.outputs.ip }}:8080"
+
