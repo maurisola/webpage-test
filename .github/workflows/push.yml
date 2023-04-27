@@ -20,5 +20,5 @@ jobs:
         tags: maurisola/webpage-test:latest
 
     - name: Run Docker container
-      run: docker run -d -p 8080:80 maurisola/webpage-test:latest
+      run: docker run -d -p 80:80 maurisola/webpage-test:latest
 
